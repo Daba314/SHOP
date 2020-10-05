@@ -2,9 +2,10 @@ package DAO.Interfaces;
 
 import models.CustomerEntity;
 import models.OrderEntity;
+import java.util.List;
 
-public interface CustomerDAO extends DAO<OrderEntity>{
+public interface CustomerDAO {
     CustomerEntity getByLastName(String LastName);
-    int deleteCustomerByLastName(String LastName);
-    OrderEntity getOrderById(int id);
+    void deleteCustomerByLastName(String LastName);
+    List<CustomerEntity> getOrderById(int id);
 }

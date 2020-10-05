@@ -10,6 +10,7 @@ public class CustomerEntity {
     private String lastname;
     private Long phonenumber;
     private String address;
+    private int orderId;
 
     @Id
     @Column(name = "customerid")
@@ -61,6 +62,17 @@ public class CustomerEntity {
         this.address = address;
     }
 
+    @Basic
+    @Column(name = "orderid")
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,12 +81,11 @@ public class CustomerEntity {
         CustomerEntity that = (CustomerEntity) o;
 
         if (customerid != that.customerid) return false;
+        if (orderId != that.orderId) return false;
         if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
         if (lastname != null ? !lastname.equals(that.lastname) : that.lastname != null) return false;
         if (phonenumber != null ? !phonenumber.equals(that.phonenumber) : that.phonenumber != null) return false;
-        if (address != null ? !address.equals(that.address) : that.address != null) return false;
-
-        return true;
+        return address != null ? address.equals(that.address) : that.address == null;
     }
 
     @Override
@@ -84,6 +95,7 @@ public class CustomerEntity {
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         result = 31 * result + (phonenumber != null ? phonenumber.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + orderId;
         return result;
     }
 }
