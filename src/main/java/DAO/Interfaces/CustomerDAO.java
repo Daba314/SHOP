@@ -7,5 +7,5 @@ import java.util.List;
 public interface CustomerDAO {
     CustomerEntity getByLastName(String LastName);
     void deleteCustomerByLastName(String LastName);
-    List<CustomerEntity> getOrderById(int id);
+    List<OrderEntity> getOrderByCustomerId(int customerID);
 }

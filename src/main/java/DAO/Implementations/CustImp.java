@@ -42,8 +42,21 @@ public class CustImp implements CustomerDAO {
     }
 
     @Override
-    public List<CustomerEntity> getOrderById(int orderid) {
-        return null;
+    public List<OrderEntity> getOrderByCustomerId(int customerID) {
+        Session session = hibernateSession();
+        Transaction transaction = session.beginTransaction();
+        List<CustomerEntity> customers = new ArrayList<>();
+        Query query = session.createQuery("from OrderEntity where orderid=:param");
+        for(CustomerEntity customer:customers){
+            if(customer.getCustomerid()==customerID){
+
+                query.setParameter("param",customer.getOrderId());
+            }
+        }
+        List<OrderEntity> orderEntity =  query.list();
+        transaction.commit();
+        session.close();
+        return orderEntity;
     }
 }
 
