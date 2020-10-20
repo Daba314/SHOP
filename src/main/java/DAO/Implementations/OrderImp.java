@@ -45,7 +45,7 @@ public class OrderImp implements OrderDAO {
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from OrderEntity where orderid=:param");
         query.setParameter("param",orderid);
-        OrderEntity orderEntity = (OrderEntity) query.getSingleResult();
+        OrderEntity orderEntity = (OrderEntity) query.list().get(0);
         transaction.commit();
         session.close();
         return orderEntity;
@@ -87,7 +87,7 @@ public class OrderImp implements OrderDAO {
     public CustomerEntity getClientsById(int id) {
         Session session = hibernateSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from CustomerEntity where orderId=:param");
+        Query query = session.createQuery("from CustomerEntity where id=:param");
         query.setParameter("param",id);
         CustomerEntity customer = (CustomerEntity) query.getSingleResult();
         transaction.commit();

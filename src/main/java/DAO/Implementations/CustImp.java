@@ -45,18 +45,64 @@ public class CustImp implements CustomerDAO {
     public List<OrderEntity> getOrderByCustomerId(int customerID) {
         Session session = hibernateSession();
         Transaction transaction = session.beginTransaction();
-        List<CustomerEntity> customers = new ArrayList<>();
-        Query query = session.createQuery("from OrderEntity where orderid=:param");
-        for(CustomerEntity customer:customers){
-            if(customer.getCustomerid()==customerID){
-
-                query.setParameter("param",customer.getOrderId());
-            }
-        }
-        List<OrderEntity> orderEntity =  query.list();
+        List<OrderEntity> orders = new ArrayList<>();
+        Query query  = session.createQuery("from CustomerEntity where customerid=:param");
+        query.setParameter("param",customerID);
+        CustomerEntity customerEntity = (CustomerEntity) query.getSingleResult();
+        //TODO change method for getting customer
+        orders.add((OrderEntity) customerEntity.getOrders());
         transaction.commit();
         session.close();
-        return orderEntity;
+        return orders;
+    }
+
+    @Override
+    public CustomerEntity get(int id) {
+        Session session = hibernateSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from CustomerEntity where customerid=:param");
+        query.setParameter("param",id);
+        CustomerEntity customerEntity = (CustomerEntity) query.list().get(0);
+        transaction.commit();
+        session.close();
+        return customerEntity;
+    }
+
+    @Override
+    public void insert(String firstName, String lastName, Long phoneNumber, String address) {
+        Session session = hibernateSession();
+        Transaction transaction = session.beginTransaction();
+        CustomerEntity customerEntity = new CustomerEntity();
+        customerEntity.setFirstname(firstName);
+        customerEntity.setLastname(lastName);
+        customerEntity.setPhonenumber(phoneNumber);
+        customerEntity.setAddress(address);
+        session.save(customerEntity);
+        transaction.commit();
+    }
+
+    @Override
+    public void update(int customerID,String firstName, String lastName, Long phoneNumber, String address) {
+        Session session = hibernateSession();
+        Transaction transaction = session.beginTransaction();
+        CustomerEntity customerEntity = session.load(CustomerEntity.class,customerID);
+        customerEntity.setFirstname(firstName);
+        customerEntity.setLastname(lastName);
+        customerEntity.setPhonenumber(phoneNumber);
+        customerEntity.setAddress(address);
+
+        session.update(customerEntity);
+        transaction.commit();
+    }
+
+
+    @Override
+    public List<CustomerEntity> getAll() {
+        Session session = hibernateSession();
+        Transaction transaction = session.beginTransaction();
+        List<CustomerEntity> customerEntities= session.createQuery("from CustomerEntity ").list();
+        transaction.commit();
+        return customerEntities;
     }
 }
 
